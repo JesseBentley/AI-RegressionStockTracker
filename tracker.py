@@ -23,6 +23,9 @@ X = preprocessing.scale(X)
 y = np.array(df['label'])
 
 X_train, X_test, y_train, y_test = cross_validation.train_test_split(X, y, test_size = 0.2)
-clf = LinearRegression
+clf = LinearRegression(n_jobs = -1)
 clf.fit(X_train, y_train)
-clf.score(X_test, y_test)
+accuracy = clf.score(X_test, y_test)
+
+print(forecast_out)
+print(accuracy)
