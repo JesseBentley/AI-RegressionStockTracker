@@ -1,4 +1,5 @@
 # AI-RegressionStockTracker
+A simple Lineare Regression stock tracker that can predict next day or week stock prices based on the data set given.
 
 ## Requirements:
 <list>
