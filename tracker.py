@@ -1,9 +1,11 @@
 import pandas as pd
-import quandl , math
+import quandl , math, datetime
 import numpy as np
 from sklearn import preprocessing
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import cross_validate
+import matplotlib.pyplot as plt
+from matplotlib import style
 
 data = quandl.get('WIKI/GOOGL')
 data = data[['Adj. Open', 'Adj. High', 'Adj. Low', 'Adj. Close', 'Adj. Volume']]
@@ -19,7 +21,7 @@ data['label'] = data[forecast_col].shift(-forecast_out)
 
 X = np.array(data.drop('label'), 1)
 X = preprocessing.scale(X)
-X = X[: -forecast_out]
+X = X[:-forecast_out]
 X_lately = X[-forecast_out:]
 data.dropna(inplace = True)
 y = np.array(data['label'])
@@ -30,4 +32,25 @@ clf = LinearRegression(n_jobs = -1)
 clf.fit(X_train, y_train)
 accuracy = clf.score(X_test, y_test)
 
-print(data.head)
+forecast_set = clf.predict(X_lately)
+print(forecast_set, accuracy, forecast_out)
+
+data['Forecast'] = np.nan
+last_date = data.iloc[-1].name
+last_unix = last_date.timestamp()
+one_day = 86400
+next_unix = last_unix + one_day
+
+for i in forecast_set:
+    next_date = datetime.datetime.fromtimestamp(next_unix)
+    next_unix += one_day
+    data.loc[next_date] = [np.nan for _ in range(len(data.columns)- 1) + [i];
+
+data['Ajd. Close'].plot();
+data['Forecast'].plot();
+plt.legend(loc=4);
+plt.xlabel('Date');
+plt.ylabel('Price');
+plt.show;
+
+
