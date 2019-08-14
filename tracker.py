@@ -10,4 +10,7 @@ data = data[['Adj. Open', 'Adj. High', 'Adj. Low', 'Adj. Close', 'Adj. Volume']]
 data['HL_PCT'] = (data['Adj. High'] - data['Adj. Close']) / data['Adj. Close'] * 100
 data['PCT_change'] = (data['Adj. Close'] - data['Adj. Open']) / data['Adj. Open'] * 100
 data = data[['Adj. Close', 'HL_PCT', 'PCT_change', 'Adj. Volume']]
-print(data.head())
+
+forecast_col = 'Adj. Close'
+data.fillna(-9999, inplace = True)
+forecast_out = int(math.ceil(0.01 * len(data)))
