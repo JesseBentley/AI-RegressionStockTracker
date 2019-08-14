@@ -44,11 +44,11 @@ next_unix = last_unix + one_day
 for i in forecast_set:
     next_date = datetime.datetime.fromtimestamp(next_unix)
     next_unix += one_day
-    data.loc[next_date] = [np.nan for _ in range(len(data.columns)- 1) + [i];
+    data.loc[next_date] = [np.nan for _ in range(len(data.columns)- 1)] + [i]
 
-data['Ajd. Close'].plot();
-data['Forecast'].plot();
-plt.legend(loc=4);
-plt.xlabel('Date');
-plt.ylabel('Price');
-plt.show();
+data['Ajd. Close'].plot()
+data['Forecast'].plot()
+plt.legend(loc=4)
+plt.xlabel('Date')
+plt.ylabel('Price')
+plt.show()
