@@ -5,28 +5,9 @@ from sklearn import preprocessing
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import cross_validate
 
-df = quandl.get('WIKI/GOOGL')
-df = df[['Adj. Open', 'Adj. High', 'Adj. Low', 'Adj. Close', 'Adj. Volume']]
-df['HL_PCT'] = (df['Adj. High'] - df['Adj. Close']) / df['Adj. Close'] * 100
-df['PCT_change'] = (df['Adj. Close'] - df['Adj. Open']) / df['Adj. Open'] * 100
-df = df['Adj. Close', 'HL_PCT', 'PCT_change', 'Adj. Volume']
-
-forecast_col = 'Adj. Close'
-df.fillna(-99999, inplace=True)
-
-forecast_out = int(math.ceil(0.01 * len(df)))
-df['label'] = df[forecast_col].shift(-forecast_out)
-df.dropna(inplace = True)
-
-X = np.array(df.drop(['label'], 1))
-y = np.array(df['label'])
-X = preprocessing.scale(X)
-y = np.array(df['label'])
-
-X_train, X_test, y_train, y_test = cross_validate.train_test_split(X, y, test_size = 0.2)
-clf = LinearRegression(n_jobs = 2)
-clf.fit(X_train, y_train)
-accuracy = clf.score(X_test, y_test)
-
-print(forecast_out)
-print(accuracy)
+data = quandl.get('WIKI/GOOGL')
+data = data[['Adj. Open', 'Adj. High', 'Adj. Low', 'Adj. Close', 'Adj. Volume']]
+data['HL_PCT'] = (data['Adj. High'] - data['Adj. Close']) / data['Adj. Close'] * 100
+data['PCT_change'] = (data['Adj. Close'] - data['Adj. Open']) / data['Adj. Open'] * 100
+data = data[['Adj. Close', 'HL_PCT', 'PCT_change', 'Adj. Volume']]
+print(data.head())
